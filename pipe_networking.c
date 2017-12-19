@@ -12,7 +12,26 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-  return -1;
+  int from_client;
+
+  char buffer[HANDSHAKE_BUFFER_SIZE];
+
+  mkfifo("luigi", 0600);
+
+  //block on open, recieve message
+  printf("[server] handshake: making wkp\n");
+  from_client = open( "luigi", O_RDONLY, 0);
+  read(from_client, buffer, sizeof(buffer));
+  printf("[server] handshake: received [%s]\n", buffer);
+
+  // fork to create subserver, remove wkp for main server
+  /*f = fork();
+  if (f != 0) {
+    close luigi;
+    remove("luigi"); 
+    printf("[server] handshake: removed wkp\n");
+    } */
+  return from_client;
 }
 
 
@@ -25,6 +44,8 @@ int server_setup() {
   returns the file descriptor for the downstream pipe.
   =========================*/
 int server_connect(int from_client) {
+  from_client = open( "luigi", O_RDONLY, 0);
+  write()
   return -1;
 }
 
@@ -45,7 +66,7 @@ int server_handshake(int *to_client) {
 
   mkfifo("luigi", 0600);
 
-  //block on open, recieve mesage
+  //block on open, recieve message
   printf("[server] handshake: making wkp\n");
   from_client = open( "luigi", O_RDONLY, 0);
   read(from_client, buffer, sizeof(buffer));
