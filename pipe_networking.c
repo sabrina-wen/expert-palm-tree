@@ -12,16 +12,18 @@
   returns the file descriptor for the upstream pipe.
   =========================*/
 int server_setup() {
-  int from_client;
 
+  int from_client;
   char buffer[HANDSHAKE_BUFFER_SIZE];
 
+  //make WKP
   mkfifo("luigi", 0600);
 
   //block on open, recieve message
   printf("[server] handshake: making wkp\n");
   from_client = open( "luigi", O_RDONLY, 0);
 
+  //remove WKP
   remove("luigi");
 
   return from_client;
@@ -65,6 +67,7 @@ int server_connect(int from_client) {
 
   returns the file descriptor for the upstream pipe.
   =========================*/
+/*
 int server_handshake(int *to_client) {
 
   int from_client;
@@ -92,6 +95,8 @@ int server_handshake(int *to_client) {
 
   return from_client;
 }
+
+*/
 
 /*=========================
   client_handshake
